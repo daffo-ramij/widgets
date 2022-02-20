@@ -3,9 +3,20 @@ import axios from 'axios';
 
 const Search = () => {
   const [term, setTerm] = useState('Love');
+  const [debauncedTerm, setDebauncedTerm] = useState(term);
   const [result, setResult] = useState([]);
 
   // console.log(result);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebauncedTerm(term);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [term]);
 
   useEffect(() => {
     const searchWiki = async () => {
@@ -20,30 +31,46 @@ const Search = () => {
       });
       setResult(data.query.search);
     };
+    searchWiki();
+  }, [debauncedTerm]);
 
-    if (term && !result.length) {
-      searchWiki();
-    } else {
-      const timeOut = setTimeout(() => {
-        if (term) {
-          searchWiki();
-        }
-      }, 1000);
+  // useEffect(() => {
+  //   const searchWiki = async () => {
+  //     const { data } = await axios.get('https://en.wikipedia.org/w/api.php', {
+  //       params: {
+  //         action: 'query',
+  //         list: 'search',
+  //         origin: '*',
+  //         format: 'json',
+  //         srsearch: term,
+  //       },
+  //     });
+  //     setResult(data.query.search);
+  //   };
 
-      return () => {
-        clearTimeout(timeOut);
-      };
-    }
+  //   if (term && !result.length) {
+  //     searchWiki();
+  //   } else {
+  //     const timeOut = setTimeout(() => {
+  //       if (term) {
+  //         searchWiki();
+  //       }
+  //     }, 1000);
 
-    //todo  defines a function and imidiately invoked it
-    // (async () => {
-    //   await axios.get('');
-    // })();
-    //Todo Use of Promises
-    // axios.get('ffff').then((response) => {
-    //   console.log(response.data);
-    // });
-  }, [term]);
+  //     return () => {
+  //       clearTimeout(timeOut);
+  //     };
+  //   }
+
+  //   //todo  defines a function and imidiately invoked it
+  //   // (async () => {
+  //   //   await axios.get('');
+  //   // })();
+  //   //Todo Use of Promises
+  //   // axios.get('ffff').then((response) => {
+  //   //   console.log(response.data);
+  //   // });
+  // }, [term]);
 
   const renderdList = result.map((result) => {
     return (
