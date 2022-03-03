@@ -3,6 +3,8 @@ import Accordion from './component/Accordion';
 import Search from './component/Search';
 import Dropdown from './component/Dropdown';
 import Translate from './component/Translate';
+import Route from './component/Route';
+import Header from './component/Header';
 
 const items = [
   {
@@ -26,8 +28,34 @@ const options = [
   { lebel: 'The color Yellow', value: 'Yellow' },
 ];
 
+/**11111 */
+
+// const showAccordion = () => {
+//   if (window.location.pathname === '/') {
+//     return <Accordion items={items} />;
+//   }
+// };
+
+// const showList = () => {
+//   if (window.location.pathname === '/search') {
+//     return <Search />;
+//   }
+// };
+
+// const showDropdown = () => {
+//   if (window.location.pathname === '/dropdown') {
+//     return <Dropdown />;
+//   }
+// };
+
+// const showTranslate = () => {
+//   if (window.location.pathname === '/translate') {
+//     return <Translate />;
+//   }
+// };
+
 export default () => {
-  // const [selected, setSelected] = useState(options[0]);
+  const [selected, setSelected] = useState(options[0]);
   // const [showTrogoler, setShowTrogoler] = useState(true);
 
   return (
@@ -48,7 +76,31 @@ export default () => {
     // </div>
 
     <div>
-      <Translate />
+      {/**11111 */}
+      {/* <Translate /> */}
+      {/* {showAccordion()}
+      {showList()}
+      {showDropdown()}
+      {showTranslate()} */}
+
+      <Header />
+      <Route path={'/'}>
+        <Accordion items={items} />
+      </Route>
+      <Route path={'/search'}>
+        <Search />
+      </Route>
+      <Route path={'/dropdown'}>
+        <Dropdown
+          lebel="Select Item"
+          options={options}
+          selectedP={selected}
+          onSelectedChange={setSelected}
+        />
+      </Route>
+      <Route path={'/translate'}>
+        <Translate />
+      </Route>
     </div>
   );
 };
